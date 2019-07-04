@@ -17,7 +17,7 @@ end
 ch = @conn.create_channel
 q = ch.queue("main_queue", durable: true)	#declare queue, will be created if it doesn't exist
 while(true)
-    msg = (rand(20..45)).to_i.to_s			#generate number in 40..50
+    msg = (rand(25..50)).to_i.to_s			#generate number in 40..50
     q.publish(msg, persistent: true)
     puts " [x] Sent #{msg}"
     sleep(0.5)
