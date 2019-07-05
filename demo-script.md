@@ -25,11 +25,29 @@ The system consists of 5 micro-services
     environment (container). *Open up a Dockerfile and walk through it*
     * The `FROM` instruction indicates a base container that will be downloaded
         from a public or private registry.
+    * `WORKDIR` sets the active directory where following commands will be run. `COPY`
+        then copies over the code to this directory.
+    * `RUN` executes a command. In this case (status-api), the container will
+        install all of the app's dependencies, then build and package the app.
+    * `EXPOSE` informs Docker that the container listens to the given port at runtime.
+    * `ENTRYPOINT` configures the container to run the given executable as the 
+        default app.
     * Dockerfiles are minuscule text files so they can be checked in/versioned
         with the codebase
 - There is a single docker-compose.yml file that specifies how the containers
     communicate with one another. *Open up the docker-compose.yml file and walk
     through it*
+    * In this file, we define each app as a service. Each service runs in its own
+        container, which is based off the specified image. This allows for easy
+        scaling by spinning up new containers of a specific service. This will
+        be demonstrated later.
+    * `depends_on` indicates dependencies between services. Docker will start and stop
+        containers in order of dependency (ie. services will be started after any services
+        specified in `depends_on`). Spinning up a container automatically spins up
+        any of its dependencies as well. 
+    * `networks` points all services to the same `demo` network, which is defined
+        at the bottom. `demo` uses the bridge driver which, without going into
+        details, is used for standalone containers that need to communicate.
 - This is *Infrastructure as Code*
     * The same containers that run on the dev machine can be pushed to testing
         and production environments
