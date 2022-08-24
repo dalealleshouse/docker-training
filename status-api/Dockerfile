@@ -1,4 +1,5 @@
-FROM microsoft/dotnet:1.1-sdk-msbuild
+# FROM microsoft/dotnet:1.1-sdk-msbuild
+FROM mcr.microsoft.com/dotnet/sdk:2.1
 
 WORKDIR /app
 COPY ./ /app

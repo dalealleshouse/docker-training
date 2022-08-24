@@ -24,13 +24,13 @@ services:
       - demo
 
   status-api:
-    build: ../status-api
+    build: ../status-api2
     depends_on:
       - queue
       - java-consumer
       - ruby-producer
     ports:
-      - "5000:5000"
+      - "5000:80"
     networks:
       - demo
 

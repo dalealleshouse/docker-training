@@ -53,9 +53,9 @@ function load_data() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             if (xhr.status == 200) {
                 var response = JSON.parse(xhr.responseText);
-                document.getElementById("queue").innerHTML = response.queue_totals.messages_ready;
-                document.getElementById("progress").innerHTML = response.queue_totals.messages_unacknowledged;
-                document.getElementById("completed").innerHTML = response.message_stats.ack;
+                document.getElementById("queue").innerHTML = response.queueStats.ready;
+                document.getElementById("progress").innerHTML = response.queueStats.unacknowledged;
+                document.getElementById("completed").innerHTML = response.totalProcessed.total;
             }
             setTimeout(load_data, 2000);
         }
