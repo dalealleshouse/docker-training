@@ -1,4 +1,4 @@
-﻿namespace StatusApi
+namespace StatusApi
 {
     using System;
     using System.Net.Http;
@@ -7,24 +7,26 @@
     using System.Runtime.Serialization.Json;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
 
-    [Route("/status")]
-    public class StatusController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class StatusController : ControllerBase
     {
         private readonly ILogger<StatusController> _logger;
         private readonly RabbitSettings _settings;
 
-        public StatusController(ILogger<StatusController> logger, IOptions<RabbitSettings> settings)
+        public StatusController(ILogger<StatusController> logger, IOptions<RabbitSettings> options)
         {
             _logger = logger;
-            _settings = settings.Value;
+            _settings = options.Value;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> OverviewAsync()
+        [HttpGet(Name = "GetStatus")]
+        public async Task<ActionResult<RabbitOverview>> OverviewAsync()
         {
             try
             {
@@ -61,21 +63,21 @@
     [DataContract]
     public class RabbitOverview
     {
-        [DataMember(Name = "queue_totals")] public MessageCounts QueueStats;
-        [DataMember(Name = "message_stats")] public TotalCount TotalProcessed;
+        [DataMember(Name = "queue_totals")] public MessageCounts QueueStats { get; set; }
+        [DataMember(Name = "message_stats")] public TotalCount TotalProcessed { get; set; }
     }
 
     [DataContract]
     public class MessageCounts
     {
-        [DataMember(Name = "messages_ready")] public int Ready;
+        [DataMember(Name = "messages_ready")] public int Ready { get; set; }
 
-        [DataMember(Name = "messages_unacknowledged")] public int Unacknowledged;
+        [DataMember(Name = "messages_unacknowledged")] public int Unacknowledged { get; set; }
     }
 
     [DataContract]
     public class TotalCount
     {
-        [DataMember(Name = "ack")] public int Total;
+        [DataMember(Name = "ack")] public int Total { get; set; }
     }
 }

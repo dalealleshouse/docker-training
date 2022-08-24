@@ -1,19 +1,38 @@
-﻿namespace MvcApp
+using StatusApi;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddSwaggerGen();
+builder.Services.AddOptions<RabbitSettings>().BindConfiguration("RabbitSettings");
+
+builder.Services.AddCors(options =>
 {
-    using System.IO;
-    using Microsoft.AspNetCore.Hosting;
-
-    public class Program
-    {
-        public static void Main(string[] args)
+    options.AddDefaultPolicy(
+        policy =>
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<Startup>()
-                .Build();
+            policy.AllowAnyOrigin();
+        });
+});
 
-            host.Run();
-        }
-    }
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+// app.UseHttpsRedirection();
+
+// app.UseAuthorization();
+
+app.MapControllers();
+app.UseCors();
+
+app.Run();

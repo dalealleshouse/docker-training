@@ -74,7 +74,7 @@ The system consists of 5 micro-services
 - The following command will spin up 5 *Consumers* to help with processing the
     items in the queue.
     ``` bash
-    > docker-compose scale java-consumer=5
+    > docker-compose up --scale java-consumer=5 -d
     ```
     * The number of items in *In Progress* should climb to 5
     * Due to the innovation of UnionFS and Images, additional containers

@@ -24,7 +24,7 @@ services:
       - demo
 
   status-api:
-    build: ../status-api2
+    build: ../status-api
     depends_on:
       - queue
       - java-consumer
